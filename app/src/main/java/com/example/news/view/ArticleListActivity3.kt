@@ -115,7 +115,7 @@ class ArticleListActivity3 : BaseActivity() {
          * whole View: its data, which will be set to the ViewState (observed for UI updates)
          * and its state (loading state, error state).
          */
-        viewModel3.dataState.observe(this, { dataState ->
+        viewModel3.dataState.observe(this) { dataState ->
 
             log("toto", "$dataState")
 
@@ -140,12 +140,12 @@ class ArticleListActivity3 : BaseActivity() {
             if (viewModel3.viewState.value?.page == 1) {
                 swipe_refresh.isRefreshing = false
             }
-        })
+        }
 
         /**
          * MVI Architecture: the View observes the ViewState for UI updates.
          */
-        viewModel3.viewState.observe(this, { viewState ->
+        viewModel3.viewState.observe(this) { viewState ->
             viewState.articles?.let { data ->
                 articles.clear()
                 articles.addAll(data)
@@ -154,7 +154,7 @@ class ArticleListActivity3 : BaseActivity() {
             viewState.query?.let { query ->
                 supportActionBar?.title = query
             }
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

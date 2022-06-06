@@ -67,7 +67,7 @@ class ArticleListActivity4 : BaseActivity() {
          * whole View: its data, which will be set to the ViewState (observed for UI updates)
          * and its state (loading state, error state).
          */
-        viewModel4.dataState.observe(this, { dataState ->
+        viewModel4.dataState.observe(this) { dataState ->
 
             // update ViewState
             dataState.data?.let { event ->
@@ -90,7 +90,7 @@ class ArticleListActivity4 : BaseActivity() {
 //            if (viewModel4.viewState.value?.page == 1) {
 //                swipe_refresh.isRefreshing = false
 //            }
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

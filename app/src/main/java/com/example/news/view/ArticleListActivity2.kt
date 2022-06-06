@@ -98,31 +98,31 @@ class ArticleListActivity2 : BaseActivity() {
         lifecycle.addObserver(viewModel2)
 
         // init data observers and update the UI
-        viewModel2.articles.observe(this, { data ->
+        viewModel2.articles.observe(this) { data ->
             articles.clear()
             articles.addAll(data)
             adapter.notifyDataSetChanged()
-        })
-        viewModel2.errorMessage.observe(this, { msg ->
+        }
+        viewModel2.errorMessage.observe(this) { msg ->
             msg?.let {
                 showAlertDialog(msg)
             }
-        })
-        viewModel2.trigger.observe(this, { trigger ->
+        }
+        viewModel2.trigger.observe(this) { trigger ->
             if (supportActionBar?.title != trigger.first) {
                 // scroll to top if the query has changed
                 articles_recyclerview.scrollToPosition(0)
                 supportActionBar?.title = trigger.first
             }
-        })
-        viewModel2.showProgress.observe(this, { show ->
+        }
+        viewModel2.showProgress.observe(this) { show ->
             showProgressBar(show)
-        })
-        viewModel2.refreshing.observe(this, { refreshing ->
+        }
+        viewModel2.refreshing.observe(this) { refreshing ->
             if (refreshing == false) {
                 swipe_refresh.isRefreshing = false
             }
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

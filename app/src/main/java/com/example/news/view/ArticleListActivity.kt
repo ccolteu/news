@@ -74,22 +74,22 @@ class ArticleListActivity : BaseActivity() {
         lifecycle.addObserver(viewModel)
 
         // init data observers and update the UI
-        viewModel.articles.observe(this, { data ->
+        viewModel.articles.observe(this) { data ->
             articles.clear()
             articles.addAll(data)
             adapter.notifyDataSetChanged()
-        })
-        viewModel.errorMessage.observe(this, { msg ->
+        }
+        viewModel.errorMessage.observe(this) { msg ->
             msg?.let {
                 showAlertDialog(msg)
             }
-        })
-        viewModel.query.observe(this, { query ->
+        }
+        viewModel.query.observe(this) { query ->
             supportActionBar?.title = query
-        })
-        viewModel.showProgress.observe(this, { show ->
+        }
+        viewModel.showProgress.observe(this) { show ->
             showProgressBar(show)
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
