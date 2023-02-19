@@ -5,18 +5,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.news.R
-import com.example.news.model.Article
 import com.example.news.view.WebViewActivity
+import com.example.news.viewmodel.ArticleListActivityViewModel4
 
 @Composable
 fun ArticleList(
-    articles: SnapshotStateList<Article>?
+    viewModel4: ArticleListActivityViewModel4 = viewModel()
 ) {
+    val articles by viewModel4.articles.observeAsState()
     val context = LocalContext.current
     articles?.let { articles ->
         LazyColumn(

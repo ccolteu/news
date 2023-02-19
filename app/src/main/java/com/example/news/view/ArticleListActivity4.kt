@@ -11,14 +11,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.compose.runtime.livedata.observeAsState
 import com.example.news.R
 import com.example.news.MyApplication
 import com.example.news.mvi.ArticleListStateEvent
 import com.example.news.util.InjectorUtil
+import com.example.news.util.Status
 import com.example.news.viewmodel.ArticleListActivityViewModel4
 import com.example.news.viewmodel.ArticleListActivityViewModel4Factory
-import androidx.compose.runtime.getValue
 import com.example.news.view.composable.ArticleList
 import com.example.news.view.composable.CustomTheme
 
@@ -45,11 +44,7 @@ class ArticleListActivity4 : BaseActivity() {
 
         setContent {
             CustomTheme { // handles Dark mode
-
-                // observed by the UI, re-compose ArticleList when modified
-                val articles by viewModel4.articles.observeAsState()
-
-                ArticleList(articles)
+                ArticleList()
             }
         }
 
@@ -76,16 +71,16 @@ class ArticleListActivity4 : BaseActivity() {
                 }
             }
 
-//            // update loading state
-//            showProgressBar(dataState.status == Status.LOADING)
-//
-//            // update error state
-//            dataState.message?.let { event ->
-//                event.getContentIfNotConsumed()?.let { message ->
-//                    showAlertDialog(message)
-//                }
-//            }
-//
+            // update loading state
+            showProgressBar(dataState.status == Status.LOADING)
+
+            // update error state
+            dataState.message?.let { event ->
+                event.getContentIfNotConsumed()?.let { message ->
+                    showAlertDialog(message)
+                }
+            }
+
 //            // update refresh state
 //            if (viewModel4.viewState.value?.page == 1) {
 //                swipe_refresh.isRefreshing = false
