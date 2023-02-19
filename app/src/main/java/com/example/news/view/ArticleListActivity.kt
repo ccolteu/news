@@ -14,19 +14,20 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.MyApplication
 import com.example.news.R
+import com.example.news.databinding.ActivityArticleListBinding
 import com.example.news.model.Article
 import com.example.news.util.InjectorUtil
 import com.example.news.util.TOP_HEADLINES
 import com.example.news.view.WebViewActivity.Companion.URL_EXTRA
 import com.example.news.viewmodel.ArticleListActivityViewModel
 import com.example.news.viewmodel.ArticleListActivityViewModelFactory
-import kotlinx.android.synthetic.main.activity_article_list.*
 
 /**
  * Implements MVVM architecture
  */
 class ArticleListActivity : BaseActivity() {
 
+    private lateinit var viewsBinding: ActivityArticleListBinding
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var searchMenu: MenuItem
     private lateinit var adapter: ArticlesAdapter
@@ -50,7 +51,8 @@ class ArticleListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_article_list)
+        viewsBinding = ActivityArticleListBinding.inflate(layoutInflater)
+        setContentView(viewsBinding.root)
         initUI()
         initObservers()
         saveQueryToRecentSuggestions(TOP_HEADLINES)
@@ -62,9 +64,9 @@ class ArticleListActivity : BaseActivity() {
                 LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             else -> LinearLayoutManager(this)
         }
-        articles_recyclerview.layoutManager = linearLayoutManager
-        adapter = ArticlesAdapter(articles, listener)
-        articles_recyclerview.adapter = adapter
+        viewsBinding.articlesRecyclerview.layoutManager = linearLayoutManager
+        adapter = ArticlesAdapter(this@ArticleListActivity, articles, listener)
+        viewsBinding.articlesRecyclerview.adapter = adapter
     }
 
     private fun initObservers() {

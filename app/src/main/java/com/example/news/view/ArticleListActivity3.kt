@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.MyApplication
 import com.example.news.R
+import com.example.news.databinding.ActivityArticleListBinding
 import com.example.news.model.Article
 import com.example.news.mvi.ArticleListStateEvent
 import com.example.news.util.InjectorUtil
@@ -23,7 +24,6 @@ import com.example.news.util.TOP_HEADLINES
 import com.example.news.util.log
 import com.example.news.viewmodel.ArticleListActivityViewModel3
 import com.example.news.viewmodel.ArticleListActivityViewModel3Factory
-import kotlinx.android.synthetic.main.activity_article_list.*
 
 /**
  * Same as ArticleListActivity, but implements MVI Architecture.
@@ -31,6 +31,8 @@ import kotlinx.android.synthetic.main.activity_article_list.*
  * the StateEvents via the Repository and sends back ViewStates wrapped in DataStates to the View.
  */
 class ArticleListActivity3 : BaseActivity() {
+
+    private lateinit var viewsBinding: ActivityArticleListBinding
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var searchMenu: MenuItem
     private lateinit var adapter: ArticlesAdapter
@@ -54,7 +56,8 @@ class ArticleListActivity3 : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_article_list)
+        viewsBinding = ActivityArticleListBinding.inflate(layoutInflater)
+        setContentView(viewsBinding.root)
         initUI()
         initObservers()
         saveQueryToRecentSuggestions(TOP_HEADLINES)
@@ -66,7 +69,7 @@ class ArticleListActivity3 : BaseActivity() {
                 LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             else -> LinearLayoutManager(this)
         }
-        articles_recyclerview.layoutManager = linearLayoutManager
+        viewsBinding.articlesRecyclerview.layoutManager = linearLayoutManager
         // triggering loading new pages as we scroll to the end of the list
         val scrollListener: RecyclerView.OnScrollListener =
             object : RecyclerView.OnScrollListener() {
@@ -74,7 +77,7 @@ class ArticleListActivity3 : BaseActivity() {
                     super.onScrollStateChanged(recyclerView, newState)
                     when (resources.configuration.orientation) {
                         Configuration.ORIENTATION_LANDSCAPE ->
-                            if (!articles_recyclerview.canScrollHorizontally(1)) {
+                            if (!viewsBinding.articlesRecyclerview.canScrollHorizontally(1)) {
                                 /**
                                  * MVI Architecture: user actions trigger events being sent from View to ViewModel.
                                  * Here we send IncrementPage to the ViewModel when the user performs a search.
@@ -82,7 +85,7 @@ class ArticleListActivity3 : BaseActivity() {
                                 viewModel3.setStateEvent(ArticleListStateEvent.IncrementPageEvent)
                             }
                         else ->
-                            if (!articles_recyclerview.canScrollVertically(1)) {
+                            if (!viewsBinding.articlesRecyclerview.canScrollVertically(1)) {
                                 /**
                                  * MVI Architecture: user actions trigger events being sent from View to ViewModel.
                                  * Here we send IncrementPage to the ViewModel when the user performs a search.
@@ -92,10 +95,10 @@ class ArticleListActivity3 : BaseActivity() {
                     }
                 }
             }
-        articles_recyclerview.addOnScrollListener(scrollListener)
-        adapter = ArticlesAdapter(articles, listener)
-        articles_recyclerview.adapter = adapter
-        swipe_refresh.setOnRefreshListener {
+        viewsBinding.articlesRecyclerview.addOnScrollListener(scrollListener)
+        adapter = ArticlesAdapter(this@ArticleListActivity3, articles, listener)
+        viewsBinding.articlesRecyclerview.adapter = adapter
+        viewsBinding.swipeRefresh.setOnRefreshListener {
             /**
              * MVI Architecture: user actions trigger events being sent from View to ViewModel.
              * Here we send Refresh to the ViewModel when the user performs a search.
@@ -138,7 +141,7 @@ class ArticleListActivity3 : BaseActivity() {
 
             // update refresh state
             if (viewModel3.viewState.value?.page == 1) {
-                swipe_refresh.isRefreshing = false
+                viewsBinding.swipeRefresh.isRefreshing = false
             }
         }
 

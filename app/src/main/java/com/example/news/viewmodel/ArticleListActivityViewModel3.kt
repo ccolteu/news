@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.OnLifecycleEvent
@@ -15,11 +14,11 @@ import com.example.news.mvi.ArticleListViewState
 import com.example.news.mvi.DataState
 import com.example.news.util.AbsentLiveData
 import com.example.news.util.TOP_HEADLINES
+import com.example.news.util.Transformations
 import com.example.news.util.log
 import kotlinx.coroutines.CompletableJob
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 
 /**
  * ViewModel for the ArticleListActivity3. Maintains its data and business logic.
