@@ -126,9 +126,9 @@ class ArticleListActivity : BaseActivity() {
     }
 
     // receive and handle the search intent sent by the SearchView
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (intent?.action == Intent.ACTION_SEARCH) {
+        if (intent.action == Intent.ACTION_SEARCH) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
 
                 // save query to recent suggestions
